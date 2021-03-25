@@ -6,14 +6,10 @@ module.exports = async (server, { hdbCore, logger }) => {
     method: 'GET',
     handler: (request) => {
       request.body= {
-        operation: 'search_by_value',
-        schema: 'dev',
-        table: 'dogs',
-        search_attribute: 'breed',
-        search_value: 'Mu*',
-        get_attributes: ['*']
+        operation: 'sql',
+        sql: 'SELECT * FROM dev.dogs ORDER BY dog_name'
       };
-      return hdbCore.request(request);
+      return hdbCore.requestWithoutAuthentication(request);
     }
   })
 }

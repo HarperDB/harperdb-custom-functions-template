@@ -13,5 +13,3 @@ module.exports = async (server, { hdbCore, logger }) => {
     }
   })
 }
-
-module.exports.autoPrefix = 'v1';

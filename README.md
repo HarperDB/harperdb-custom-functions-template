@@ -4,32 +4,20 @@
 
 To deploy these routes, simply clone this repo into your `custom_functions` folder. By default, this folder is located in your HarperDB user folder `(~/hdb)`.
 
+**Routes are automatically prefixed with their parent folder name.**
+
 ##Routes
 
 ---
 
-###/addDog 
-FILE: /routes/addDog.js
+###/dogs
 
-This route ***passes through*** HarperDB's standard authentication. You'll need to include an appropriately authorized users Basic auth token in your request, which this route will then authenticate like any request to the standard HarperDB Operation API.
-
-```
-server.route({
-    url: '/addDog',
-    method: 'POST',
-    preValidation: hdbCore.preValidation,
-    handler: hdbCore.request,
-  })
-```
-
-###/getDogs
-FILE: /routes/getDogs.js
-
-This route ***passes through*** HarperDB's standard authentication. You'll need to include an appropriately authorized users Basic auth token in your request, which this route will then authenticate like any request to the standard HarperDB Operation API.
+GET, WITH NO preValidation AND USING hdbCore.requestWithoutAuthentication
+BYPASSES ALL CHECKS: DO NOT USE RAW USER-SUBMITTED VALUES IN SQL STATEMENTS
 
 ```
-server.route({
-    url: '/dogs',
+  server.route({
+    url: '/',
     method: 'GET',
     handler: (request) => {
       request.body= {
@@ -41,15 +29,26 @@ server.route({
   })
 ```
 
-###/getDogById/:id
-FILE: /routes/getDogById.js
+###/addDog 
 
-This route ***bypasses*** HarperDB's standard authentication. You'll you'll want to include your own, OR ANY USER WILL BE ABLE TO ACCESS THIS REQUEST.
+POST, WITH STANDARD PASS-THROUGH BODY, PAYLOAD AND HDB AUTHENTICATION
 
+```
+server.route({
+    url: '/',
+    method: 'POST',
+    preValidation: hdbCore.preValidation,
+    handler: hdbCore.request,
+  })
+```
+
+###/dogs/:id
+
+GET, WITH ASYNC THIRD-PARTY AUTH PREVALIDATION
 
 ```
   server.route({
-    url: '/dogs/:id',
+    url: '/:id',
     method: 'GET',
     preValidation: async (request, reply) => {
       /*

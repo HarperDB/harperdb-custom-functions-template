@@ -1,4 +1,4 @@
-# HarperDB Custom Functions Demo
+# HarperDB Custom Functions Template
 
  This repo comprises a set of Fastify routes, helpers, and static content to be loaded by HarperDB's Custom Functions Fastify Server.
 

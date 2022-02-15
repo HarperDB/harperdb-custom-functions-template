@@ -26,9 +26,30 @@ module.exports = async (server, { hdbCore, logger }) => {
     handler: hdbCore.request,
   });
 
-  // GET, WITH ASYNC THIRD-PARTY AUTH PREVALIDATION
+
+  // GET, WITH OPERATION SET IN THE preParsing HANDLER
+  // THIS ALLOWS YOU TO DEFINE OPERATIONS SERVER-SIDE
+  // WHILE STILL BEING ABLE TO PREVALIDATE HEADER AUTH
+  // AGAINST THE OPERATION.
   server.route({
     url: '/:id',
+    method: 'GET',
+    preParsing: (request, response, done) => {
+      request.body = {
+        ...request.body,
+        operation: 'sql',
+        sql: `SELECT * FROM dev.dog WHERE id = ${request.params.id}`
+      };
+      done();
+    },
+    preValidation: hdbCore.preValidation,
+    handler: (request) => hdbCore.request(request),
+  });
+
+  // GET, WITH ASYNC THIRD-PARTY AUTH PREVALIDATION
+  // (IMPORTED FROM ../helpers/example)
+  server.route({
+    url: '/async-verify/:id',
     method: 'GET',
     preValidation: (request) => customValidation(request, logger),
     handler: (request) => {

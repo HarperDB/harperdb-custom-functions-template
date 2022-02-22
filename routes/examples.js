@@ -43,7 +43,7 @@ module.exports = async (server, { hdbCore, logger }) => {
       done();
     },
     preValidation: hdbCore.preValidation,
-    handler: (request) => hdbCore.request(request),
+    handler: hdbCore.request,
   });
 
   // GET, WITH ASYNC THIRD-PARTY AUTH PREVALIDATION

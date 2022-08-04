@@ -1,6 +1,6 @@
 {
-  "name": "custom_functions_demo",
-  "version": "1.0.0",
-  "description": "custom functions demo",
+  "name": "hdb-cf-template",
+  "version": "2.0.0",
+  "description": "An example HarperDB Custom Function",
   "author": "jaxon@harperdb.io"
 }

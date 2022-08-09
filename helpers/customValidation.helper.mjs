@@ -1,6 +1,6 @@
 import httpsRequest from "./httpsRequest.helper.mjs";
 
-export default async (request, { hdbCore, logger }) => {
+export default async (request, done, { hdbCore, logger }) => {
   const hostname = `jsonplaceholder.typicode.com`;
   const path = `/todos/1`;
   const { authorization } = request.headers;
@@ -11,6 +11,7 @@ export default async (request, { hdbCore, logger }) => {
     if (result.error) {
       throw new Error(result.error);
     }
+    done();
   } catch (error) {
     const errorMessage =
       error?.response?.data ||

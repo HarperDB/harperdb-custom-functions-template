@@ -15,7 +15,7 @@ export default async (server, { hdbCore, logger }) => {
     handler: () => {
       const body = {
         operation: "sql",
-        sql: "SELECT * FROM dev.dog ORDER BY dog_name",
+        sql: "SELECT * FROM dev.dogs ORDER BY dog_name",
       };
       return hdbCore.requestWithoutAuthentication({ body });
     },
@@ -44,7 +44,7 @@ export default async (server, { hdbCore, logger }) => {
       request.body = {
         ...request.body,
         operation: "sql",
-        sql: `SELECT * FROM dev.dog WHERE id = ${request.params.id}`,
+        sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
       };
       done();
     },
@@ -59,11 +59,12 @@ export default async (server, { hdbCore, logger }) => {
   server.route({
     url: "/async-verify/:id",
     method: "GET",
-    preValidation: (request) => customValidation(request, { hdbCore, logger }),
+    preValidation: (request, replay, done) =>
+      customValidation(request, done, { hdbCore, logger }),
     handler: (request) => {
       const body = {
         operation: "sql",
-        sql: `SELECT * FROM dev.dog WHERE id = ${request.params.id}`,
+        sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
       };
 
       /**

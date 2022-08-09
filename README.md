@@ -24,7 +24,7 @@ server.route({
   handler: () => {
     const body = {
       operation: "sql",
-      sql: "SELECT * FROM dev.dog ORDER BY dog_name",
+      sql: "SELECT * FROM dev.dogs ORDER BY dog_name",
     };
     return hdbCore.requestWithoutAuthentication({ body });
   },
@@ -44,6 +44,15 @@ server.route({
 })
 ```
 
+#### Insert Data with cURL POST to /
+
+```
+curl -X POST http://localhost:9926/cf-example/ \
+  -H 'Authorization: Basic aGRiY2Y6aGRiY2Y=' \
+  -H 'Content-Type: application/json' \
+  -d '{"operation":"insert","schema":"dev","table":"dogs","records":[{"id":1, "dog_name": "barker"}]}'
+```
+
 ### GET /:id
 
 A request using preParsing and a url param for the document id.
@@ -57,7 +66,7 @@ server.route({
     request.body = {
       ...request.body,
       operation: "sql",
-      sql: `SELECT * FROM dev.dog WHERE id = ${request.params.id}`,
+      sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
     };
     done();
   },
@@ -78,7 +87,7 @@ server.route({
   handler: (request) => {
     const body = {
       operation: "sql",
-      sql: `SELECT * FROM dev.dog WHERE id = ${request.params.id}`,
+      sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
     };
 
     /**

@@ -2,5 +2,6 @@
   "name": "hdb-cf-template",
   "version": "2.0.0",
   "description": "An example HarperDB Custom Function",
+  "type": "module",
   "author": "jaxon@harperdb.io"
 }

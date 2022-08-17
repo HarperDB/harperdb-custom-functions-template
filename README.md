@@ -103,7 +103,7 @@ server.route({
 
 ---
 
-The async thrid-party validation used in the above route:
+The async third-party validation used in the above route:
 
 ```
 import httpsRequest from './httpsRequest.helper.mjs';

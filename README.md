@@ -60,12 +60,12 @@ The preParsing handler allos you to define the operations server-side while also
 
 ```
 server.route({
-  url: "/:id",
-  method: "GET",
+  url: '/:id',
+  method: 'GET',
   preParsing: (request, response, done) => {
     request.body = {
       ...request.body,
-      operation: "sql",
+      operation: 'sql',
       sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
     };
     done();
@@ -81,12 +81,12 @@ A request which uses a customValidaiton helper to perform the preValidation acti
 
 ```
 server.route({
-  url: "/async-verify/:id",
-  method: "GET",
+  url: '/async-verify/:id',
+  method: 'GET',
   preValidation: (request) => customValidation(request, { hdbCore, logger }),
   handler: (request) => {
     const body = {
-      operation: "sql",
+      operation: 'sql',
       sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
     };
 
@@ -106,7 +106,7 @@ server.route({
 The async thrid-party validation used in the above route:
 
 ```
-import httpsRequest from "./httpsRequest.helper.mjs";
+import httpsRequest from './httpsRequest.helper.mjs';
 
 export default async (request, { hdbCore, logger }) => {
   const hostname = `jsonplaceholder.typicode.com`;
@@ -123,7 +123,7 @@ export default async (request, { hdbCore, logger }) => {
     const errorMessage =
       error?.response?.data ||
       error.message ||
-      "Sorry, there was an error authenticating your request";
+      'Sorry, there was an error authenticating your request';
     logger.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -133,32 +133,32 @@ export default async (request, { hdbCore, logger }) => {
 The httpsRequest used in the above customValidation handler:
 
 ```
-import https from "https";
+import https from 'https';
 
 export default (hostname, path, headers) => {
   const options = {
     hostname,
     port: 443,
     path,
-    method: "GET",
+    method: 'GET',
     headers,
   };
 
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
-      res.setEncoding("utf8");
-      let responseBody = "";
+      res.setEncoding('utf8');
+      let responseBody = ';
 
-      res.on("data", (chunk) => {
+      res.on('data', (chunk) => {
         responseBody += chunk;
       });
 
-      res.on("end", () => {
+      res.on('end', () => {
         resolve(JSON.parse(responseBody));
       });
     });
 
-    req.on("error", (err) => {
+    req.on('error', (err) => {
       reject(err);
     });
 

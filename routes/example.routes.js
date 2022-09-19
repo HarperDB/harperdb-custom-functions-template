@@ -2,6 +2,54 @@ import customValidation from '../helpers/customValidation.helper.js';
 
 export default async (server, { hdbCore, logger }) => {
 	/**
+	 * POST requst with standard pass-through body, payload, and HDB authentication
+	 */
+	server.route({
+		url: '/',
+		method: 'POST',
+		preValidation: hdbCore.preValidation,
+		handler: hdbCore.request,
+	});
+
+	/**
+	* GET, USING hdbCore.preValidation AND hdbCore.request
+	* CRAFTING A CUSTOM REQUEST IN THE onRequest HANDLER
+ */
+	server.route({
+		url: '/onRequest',
+		method: 'GET',
+		onRequest: (request, reply, done) => {
+			request.body = {
+				operation: 'sql',
+				sql: 'SELECT * FROM dev.dogs ORDER BY dog_name',
+			};
+			done();
+		},
+		preValidation: hdbCore.preValidation,
+		handler: hdbCore.request
+	});
+
+	/*
+	* GET, USING hdbCore.preValidation AND hdbCore.request
+	* CRAFTING A CUSTOM REQUEST IN THE preParsing HANDLER
+	* WITH ACCESS TO request.body (not present in the onRequest handler)
+	*/
+	server.route({
+		url: '/preParsing/:id',
+		method: 'GET',
+		preParsing: (request, response, done) => {
+			request.body = {
+				...request.body,
+				operation: 'sql',
+				sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
+			};
+			done();
+		},
+		preValidation: hdbCore.preValidation,
+		handler: hdbCore.request,
+	});
+
+	/**
 	 * GET request that bypasses all checks
 	 * No Prevalidation
 	 * Uses hdbCore.requestWithoutAuthentication
@@ -19,37 +67,6 @@ export default async (server, { hdbCore, logger }) => {
 			};
 			return hdbCore.requestWithoutAuthentication({ body });
 		},
-	});
-
-	/**
-	 * POST requst with standard pass-through body, payload, and HDB authentication
-	 */
-	server.route({
-		url: '/',
-		method: 'POST',
-		preValidation: hdbCore.preValidation,
-		handler: hdbCore.request,
-	});
-
-	/**
-	 * GET request with the operation set in the preParsing handler
-	 * This allows you to define the operations server-side
-	 * while also being able to preValidate the header auth
-	 * against the operation
-	 */
-	server.route({
-		url: '/:id',
-		method: 'GET',
-		preParsing: (request, response, done) => {
-			request.body = {
-				...request.body,
-				operation: 'sql',
-				sql: `SELECT * FROM dev.dogs WHERE id = ${request.params.id}`,
-			};
-			done();
-		},
-		preValidation: hdbCore.preValidation,
-		handler: hdbCore.request,
 	});
 
 	/**

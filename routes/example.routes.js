@@ -2,7 +2,7 @@ import customValidation from '../helpers/customValidation.helper.js';
 
 export default async (server, { hdbCore, logger }) => {
 	/**
-	 * POST requst with standard pass-through body, payload, and HDB authentication
+	 * POST request with standard pass-through body, payload, and HDB authentication
 	 */
 	server.route({
 		url: '/',

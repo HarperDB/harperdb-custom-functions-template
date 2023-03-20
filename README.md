@@ -1,6 +1,6 @@
 # HarperDB Custom Functions Template
 
-This repo comprises a set of Fastify routes, helpers, and static content to be loaded by HarperDB's Custom Functions Fastify Server.
+This repo comprises a set of Fastify routes and helpers to be loaded by HarperDB's Custom Functions Fastify Server.
 
 To deploy this template, simply clone this repo into your `custom_functions` folder. By default, this folder is located in your HarperDB user folder `(~/hdb)`.
 
@@ -165,41 +165,4 @@ export default (hostname, path, headers) => {
     req.end();
   });
 };
-```
-
-## Static Files (Web UI)
-
----
-
-By adding a `/static` folder to your project, you can also host static files. You might, for example, create a dashboard that displays summary data based on standard HarperDB operations or Custom Functions that pull data from HarperDB.
-
-- **Your static folder MUST contain an `index.html` file**
-- **You must use absolute paths for assets (start with a slash)**
-
----
-
-INDEX.HTML
-
-```
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="/resources/img/favicon.png" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HarperDB Custom Functions Static Template</title>
-  <link href="/resources/css/style.css" rel="stylesheet">
-</head>
-<body>
-  <div id="app">
-    <div id="app-content">
-      <img width="64" height="64" src="/resources/img/logo.png" /><br /><br />
-      <b>HarperDB Custom Functions Static Template</b><br /><br />
-      Edit or replace this file to create and host your own custom UI.
-    </div>
-    <div id="app-bg-color" />
-    <div id="app-bg-dots" />
-  </div>
-</body>
-</html>
 ```

@@ -177,7 +177,7 @@ Install the module in your project by running `npm i @fastify/static`.
 
 Register `@fastify/static` with the server and set `root` to the absolute path of the directory that contains the static files to serve.
 
-Inside the handler `reply` is decorated with a `sendFile` function, use this function to directly server you static file.
+Inside the handler `reply` is decorated with a `sendFile` function, use this function to directly server your static file.
 
 ```
 module.exports = async (server, { hdbCore, logger }) => {
